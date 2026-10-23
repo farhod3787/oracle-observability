@@ -1,0 +1,62 @@
+groups:
+  - name: oracle_database_alerts
+    rules:
+      - alert: OracleDatabaseDown
+        expr: oracle_up == 0
+        for: 1m
+        labels:
+          severity: critical
+          tier: database
+        annotations:
+          summary: "Oracle Database instance is down"
+          description: "Prometheus cannot scrape metrics from Oracle Database. The instance may be stopped, listener down, or credentials invalid."
+
+      - alert: OracleTablespaceCritical
+        expr: oracle_tablespace_used_percent > 90
+        for: 5m
+        labels:
+          severity: critical
+          tier: storage
+        annotations:
+          summary: "Oracle Tablespace {{ $labels.tablespace_name }} critically full"
+          description: "Tablespace {{ $labels.tablespace_name }} is at {{ $value | printf \"%.2f\" }}% utilization (> 90%). Immediate extension or purge required."
+
+      - alert: OracleTablespaceWarning
+        expr: oracle_tablespace_used_percent > 80 and oracle_tablespace_used_percent <= 90
+        for: 10m
+        labels:
+          severity: warning
+          tier: storage
+        annotations:
+          summary: "Oracle Tablespace {{ $labels.tablespace_name }} space warning"
+          description: "Tablespace {{ $labels.tablespace_name }} has exceeded 80% utilization (current: {{ $value | printf \"%.2f\" }}%)."
+
+      - alert: OracleHighSessionUsage
+        expr: oracle_sessions_usage_percent > 85
+        for: 3m
+        labels:
+          severity: warning
+          tier: database
+        annotations:
+          summary: "Oracle high session limit utilization"
+          description: "Total sessions have reached {{ $value | printf \"%.2f\" }}% of the database configured limit (v$parameter sessions)."
+
+      - alert: OracleBlockingSessionsDetected
+        expr: oracle_blocking_sessions_count > 0
+        for: 2m
+        labels:
+          severity: warning
+          tier: performance
+        annotations:
+          summary: "Oracle blocking locks detected"
+          description: "{{ $value }} session(s) are actively blocking other sessions for more than 2 minutes."
+
+      - alert: OraclePgaCacheHitLow
+        expr: oracle_pga_cache_hit_percent < 75
+        for: 15m
+        labels:
+          severity: warning
+          tier: performance
+        annotations:
+          summary: "Oracle PGA cache hit percentage is low"
+          description: "PGA cache hit percentage has fallen to {{ $value | printf \"%.2f\" }}% (below 75%), indicating workareas spilling to disk (TEMP)."

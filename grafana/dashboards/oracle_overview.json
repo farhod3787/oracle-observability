@@ -1,0 +1,327 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 1,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 0 },
+      "id": 100,
+      "title": "System Health & Core Status",
+      "type": "row"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [
+            { "options": { "0": { "color": "red", "text": "DOWN" }, "1": { "color": "green", "text": "UP" } }, "type": "value" }
+          ],
+          "thresholds": { "mode": "absolute", "steps": [{ "color": "red", "value": null }, { "color": "green", "value": 1 }] }
+        }
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 0, "y": 1 },
+      "id": 1,
+      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "auto", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "pluginVersion": "10.0.0",
+      "targets": [{ "expr": "oracle_up", "instant": true, "refId": "A" }],
+      "title": "Database Status",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "unit": "s"
+        }
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 4, "y": 1 },
+      "id": 2,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "pluginVersion": "10.0.0",
+      "targets": [{ "expr": "oracle_instance_uptime_seconds", "instant": true, "refId": "A" }],
+      "title": "Instance Uptime",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "palette-classic" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [{ "color": "blue", "value": null }]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 8, "y": 1 },
+      "id": 3,
+      "options": { "colorMode": "value", "graphMode": "area", "justifyMode": "auto", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "pluginVersion": "10.0.0",
+      "targets": [{ "expr": "sum(oracle_sessions_total{status=\"ACTIVE\", session_type=\"USER\"})", "instant": true, "refId": "A" }],
+      "title": "Active User Sessions",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "orange", "value": 75 },
+              { "color": "red", "value": 90 }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 12, "y": 1 },
+      "id": 4,
+      "options": { "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdLabels": false, "showThresholdMarkers": true },
+      "pluginVersion": "10.0.0",
+      "targets": [{ "expr": "oracle_sessions_usage_percent", "instant": true, "refId": "A" }],
+      "title": "Session Limit Usage",
+      "type": "gauge"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "color": { "mode": "thresholds" },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "red", "value": 1 }
+            ]
+          }
+        }
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 16, "y": 1 },
+      "id": 5,
+      "options": { "colorMode": "background", "graphMode": "none", "justifyMode": "auto", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "pluginVersion": "10.0.0",
+      "targets": [{ "expr": "oracle_blocking_sessions_count", "instant": true, "refId": "A" }],
+      "title": "Blocking Sessions",
+      "type": "stat"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "red", "value": null },
+              { "color": "yellow", "value": 75 },
+              { "color": "green", "value": 90 }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": { "h": 4, "w": 4, "x": 20, "y": 1 },
+      "id": 6,
+      "options": { "orientation": "auto", "reduceOptions": { "calcs": ["lastNotNull"] }, "showThresholdLabels": false, "showThresholdMarkers": true },
+      "pluginVersion": "10.0.0",
+      "targets": [{ "expr": "oracle_pga_cache_hit_percent", "instant": true, "refId": "A" }],
+      "title": "PGA Cache Hit Ratio",
+      "type": "gauge"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 5 },
+      "id": 101,
+      "title": "Tablespace & Storage Capacity",
+      "type": "row"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "max": 100,
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              { "color": "green", "value": null },
+              { "color": "yellow", "value": 75 },
+              { "color": "red", "value": 90 }
+            ]
+          },
+          "unit": "percent"
+        }
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 0, "y": 6 },
+      "id": 7,
+      "options": { "displayMode": "gradient", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"] }, "showUnfilled": true },
+      "pluginVersion": "10.0.0",
+      "targets": [{ "expr": "oracle_tablespace_used_percent", "legendFormat": "{{tablespace_name}} ({{tablespace_type}})", "refId": "A" }],
+      "title": "Tablespace Utilization (%)",
+      "type": "bargauge"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes"
+        },
+        "overrides": [
+          {
+            "matcher": { "id": "byName", "options": "tablespace_name" },
+            "properties": [{ "id": "displayName", "value": "Tablespace" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Value #A" },
+            "properties": [{ "id": "displayName", "value": "Used Bytes" }]
+          },
+          {
+            "matcher": { "id": "byName", "options": "Value #B" },
+            "properties": [{ "id": "displayName", "value": "Max Bytes" }]
+          }
+        ]
+      },
+      "gridPos": { "h": 7, "w": 12, "x": 12, "y": 6 },
+      "id": 8,
+      "options": { "footer": { "enablePagination": true, "show": false }, "showHeader": true },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        { "expr": "oracle_tablespace_used_bytes", "format": "table", "instant": true, "refId": "A" },
+        { "expr": "oracle_tablespace_max_bytes", "format": "table", "instant": true, "refId": "B" }
+      ],
+      "title": "Tablespace Capacity Allocation",
+      "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 13 },
+      "id": 102,
+      "title": "Sessions & Wait Event Bottlenecks",
+      "type": "row"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "fillOpacity": 15, "lineWidth": 2, "stacking": { "mode": "normal" } }
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 14 },
+      "id": 9,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        { "expr": "oracle_sessions_total", "legendFormat": "{{status}} - {{session_type}}", "refId": "A" }
+      ],
+      "title": "Sessions by Status & Type",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "fillOpacity": 20, "lineWidth": 2 },
+          "unit": "s"
+        }
+      },
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 14 },
+      "id": 10,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        { "expr": "rate(oracle_wait_class_time_seconds_total[1m])", "legendFormat": "{{wait_class}}", "refId": "A" }
+      ],
+      "title": "Wait Class Time (Seconds/sec)",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "gridPos": { "h": 1, "w": 24, "x": 0, "y": 22 },
+      "id": 103,
+      "title": "Memory Breakdown & DB Operations",
+      "type": "row"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes"
+        }
+      },
+      "gridPos": { "h": 7, "w": 8, "x": 0, "y": 23 },
+      "id": 11,
+      "options": { "displayLabels": ["name", "percent"], "legend": { "displayMode": "table", "placement": "bottom" }, "pieType": "donut" },
+      "pluginVersion": "10.0.0",
+      "targets": [{ "expr": "oracle_sga_bytes", "legendFormat": "{{pool}}", "refId": "A" }],
+      "title": "SGA Memory Distribution",
+      "type": "piechart"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "unit": "bytes"
+        }
+      },
+      "gridPos": { "h": 7, "w": 8, "x": 8, "y": 23 },
+      "id": 12,
+      "options": { "displayMode": "basic", "orientation": "horizontal", "reduceOptions": { "calcs": ["lastNotNull"] } },
+      "pluginVersion": "10.0.0",
+      "targets": [{ "expr": "oracle_pga_bytes", "legendFormat": "{{stat}}", "refId": "A" }],
+      "title": "PGA Memory Statistics",
+      "type": "bargauge"
+    },
+    {
+      "datasource": "Prometheus",
+      "fieldConfig": {
+        "defaults": {
+          "custom": { "drawStyle": "line", "lineWidth": 2 },
+          "unit": "ops"
+        }
+      },
+      "gridPos": { "h": 7, "w": 8, "x": 16, "y": 23 },
+      "id": 13,
+      "options": { "legend": { "displayMode": "table", "placement": "bottom" }, "tooltip": { "mode": "multi" } },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        { "expr": "rate(oracle_sysstat_total{statistic=~\"user_commits|user_rollbacks|physical_reads|physical_writes\"}[1m])", "legendFormat": "{{statistic}}", "refId": "A" }
+      ],
+      "title": "System Activity Rates (Ops/sec)",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "15s",
+  "schemaVersion": 38,
+  "style": "dark",
+  "tags": ["oracle", "database", "observability", "dba"],
+  "time": { "from": "now-1h", "to": "now" },
+  "timepicker": {
+    "refresh_intervals": ["5s", "10s", "15s", "30s", "1m", "5m"]
+  },
+  "timezone": "browser",
+  "title": "Oracle Database Observability",
+  "uid": "oracle-database-observability",
+  "version": 1
+}
